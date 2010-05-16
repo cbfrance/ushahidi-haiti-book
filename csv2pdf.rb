@@ -1,9 +1,11 @@
 require 'rubygems'
-require "/Users/chris/git/prawn/examples/example_helper.rb"
+$LOAD_PATH.unshift("/Users/chris/git/prawn/lib")
+require 'prawn'
+
+Prawn.debug = true
 
 builder = Prawn::DocumentBuilder.new
-
-# tutorial on using ruby structs to read CSV http://www.devdaily.com/blog/post/ruby/example-split-csv-rows-data-into-fields-commas-ruby
+font = "Times"
 
 unless ARGV.length == 1
   puts "Usage: ruby csv2pdf.rb your_ushahidi_export_file.csv > output.pdf\n"
@@ -18,6 +20,7 @@ f.each_line { |line|
   builder.text(words[0].tr_s('"', '').strip)
   builder.start_new_page
 }
+
 
 document = builder.compile
 document.render_file("book.pdf")

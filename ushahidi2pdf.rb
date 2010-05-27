@@ -3,7 +3,7 @@ $LOAD_PATH.unshift("/Users/chris/git/prawn/lib")
 require 'prawn'
 require "rubygems"
 require "httparty"
-require 'pp'
+require "ap"
 require 'crack'
 
 Prawn.debug = true
@@ -15,13 +15,9 @@ unless ARGV.length == 1
   exit
 end
 
-def setup_fonts
-  pdf.font_families.update("Hoefler" => { :normal => "Hoefler Text.dfont" })
-  pdf.font("Hoefler", :style => :normal)
-  pdf.font_size 15
-end
+puts ARGV[0]
 
-if ARGV[0] = /.csv$/
+if ARGV[0] =~ /.csv$/
   p "reading csv ..."
   input_file = ARGV[0]
   x_pos = ((pdf.bounds.width / 2) - 150) 
@@ -36,12 +32,19 @@ if ARGV[0] = /.csv$/
       end
       pdf.start_new_page
     }
-  end  
-else
-  p "reading instance API ..."
-  ushahidi_url = ARGV[1]
-  setup_fonts
-  response = HTTParty.get("http://#{'ushahidi_url'}/api?task=incidents&by=all")
+  end 
+
+elsif ARGV[0] =~ /.json$/ 
+  p "reading from local json file ..."
+  
+  pdf.font_families.update("Hoefler" => { :normal => "Hoefler Text.dfont" })
+  pdf.font("Hoefler", :style => :normal)
+  pdf.font_size 15
+  
+  response = HTTParty.get("http://#{'ushahidi_url'}/api?task=pi?task=incident&orderfiled=field&sort=1&limit=10")
+  
+  puts "Dialing: http://#{'ushahidi_url'}/api?task=pi?task=incident&orderfiled=field&sort=1&limit=10"
+  
   data = response.body
   result = Crack::JSON.parse(data)
   @incidents = result["payload"]["incidents"]
@@ -50,8 +53,44 @@ else
     @incidents.each do |incident|
       pdf.text incident['incidenttitle']
       pdf.start_new_page
-    end    
+    end
   end
 
-  pdf.render_file("book.pdf")
+# ============
+# = API CALL =
+# ============  
+else
+  pdf.font_families.update("Hoefler" => { :normal => "Hoefler Text.dfont" })
+  pdf.font("Hoefler", :style => :normal)
+  pdf.font_size 15
+  
+  if File.exist?('haiti.json.txt')
+    # parse the file
+    p "reading from the existing file ...."
+    jsonfile= File.open("haiti.json.txt", "r")
+    results= jsonfile.read
+    parsed_results= Crack::JSON.parse(results)
+    @incidents = parsed_results['payload']['incidents']
+    
+    pdf.bounding_box([x_pos, y_pos], :width => 300, :height => 400) do  
+      @incidents.each do |i|
+        pdf.text i['incident']['incidentdescription']
+        pdf.start_new_page
+      end    
+    end
+    jsonfile.close
+    pdf.render_file("book.pdf")
+    `open book.pdf`
+  else
+    # write the file
+    p "reading directly from instance API ..."  
+    response= HTTParty.get("http://haiti.ushahidi.com/api?task=incidents&by=all")
+    jsonfile= File.new("haiti.json.txt", "w")
+    data = response.body
+    puts data
+    jsonfile.write(data)
+    jsonfile.close
+  end  
+  
+
 end

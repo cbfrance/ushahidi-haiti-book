@@ -6,7 +6,8 @@ require "rubygems"
 require "httparty"
 require 'crack'
 
-INSTANCE= "http://haiti.ushahidi.com/api?task=incidents&by=all"
+# INSTANCE= "http://haiti.ushahidi.com/api?task=incidents&by=all"
+INSTANCE_URL= "http://roguegenius.com/africa/api?task=incidents&by=sinceid&resp=json&id="
 
 module PrintingPress
   class Book
@@ -41,8 +42,7 @@ module PrintingPress
           @book.text("--------------------------------------------------")
           @book.text((i['incident']['incidentdescription']).gsub(/IDUshahidi:\W+\d+/, ''))
         end
-        i['incident']['incidentmedia']
-        
+        @book.text(i['incident']['incidentmedia'])
         @book.text(i['incident']['incidentdate'])
         @book.text(i['incident']['locationlatitude'])
         @book.text(i['incident']['locationlongitude'])
@@ -60,9 +60,9 @@ module PrintingPress
       File.exist?("cache.json")
     end
     
-    def read
+    def read(filename="cache.json")
       p "... reading cache"
-      jsonfile= File.open("cache.json", "r")
+      jsonfile= File.open(filename, "r")
       results= jsonfile.read
       parsed_results= Crack::JSON.parse(results)
       jsonfile.close
@@ -70,8 +70,8 @@ module PrintingPress
       return parsed_results['payload']['incidents']
     end
   
-    def write(data)
-      jsonfile= File.new("cache.json", "w")
+    def write(data, filename= "cache.json")
+      jsonfile= File.new(filename, "w")
       jsonfile.write(JSON.pretty_generate(Crack::JSON.parse(data)))
       jsonfile.close
       p "... cache written"
@@ -79,24 +79,38 @@ module PrintingPress
   end
 
   class Crawler
-    def crawl(instance)
-      p "crawling around on the web..."
-      return HTTParty.get(INSTANCE).body
-      # read the id of the last item
-      # be nice
-      # sleep 1
-      # start another query from where we left off
-      # remove duplicates
+
+    def initialize
+      attr_accessor :sinceid
+      @sinceid= 0
+    end
+              
+    # start at the first one
+    def start(current_id= "0", prev_id= "null")
+      #stop automatically when you get the same record twice
+      while @sinceid != prev_sinceid
+        instance= "#{INSTANCE_URL}#{sinceid}"
+        p "off to #{instance}"
+        crawled_pages= []
+        crawled_pages.push("instance")
+        p "Crawled pages is now #{crawled_pages.inspect}"
+        data= HTTParty.get(instance).body
+        parsed_data= Crack::JSON.parse(data)
+        last_one= parsed.data[payload][incidents].last
+        p "the last incident is #{last_one.inspect}"
+        p "completed lookup to record #{prev_sinceid}"
+        return last_one[incidentid], prev_sinceid
+      end
     end
   end
 end
 
 book= PrintingPress::Book.new
-crawler=PrintingPress::Crawler.new
-cache=PrintingPress::Cache.new
+crawler= PrintingPress::Crawler.new
+cache= PrintingPress::Cache.new
 
 unless cache.full?
-  cache.write(crawler.crawl(INSTANCE))
+  cache.write(crawler.start)
 end
 
 book.bind(cache.read)

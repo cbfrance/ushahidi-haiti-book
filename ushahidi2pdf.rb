@@ -14,7 +14,7 @@ module PrintingPress
       @book = Prawn::Document.new
       Prawn.debug = true
       @x_pos = ((@book.bounds.width / 2) - 150) 
-      @y_pos = ((@book.bounds.height / 2) + 100)
+      @y_pos = ((@book.bounds.height / 2) + 200)
       
     end
     def typeset_header
@@ -36,12 +36,12 @@ module PrintingPress
       typeset_date
       #draw the box, add reports
       incidents.each do |i|
-        @book.bounding_box([@x_pos, @y_pos], :width => 300, :height => 400) do  
+        @book.bounding_box([@x_pos, @y_pos], :width => 300, :height => 500) do  
           @book.text((i['incident']['incidenttitle']))
-          @book.text("----------------------------------------------")
+          @book.text("--------------------------------------------------")
           @book.text((i['incident']['incidentdescription']).gsub(/IDUshahidi:\W+\d+/, ''))
         end
-        
+        i['incident']['incidentmedia']
         
         @book.text(i['incident']['incidentdate'])
         @book.text(i['incident']['locationlatitude'])

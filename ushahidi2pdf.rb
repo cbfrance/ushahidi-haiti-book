@@ -24,7 +24,7 @@ class Book
     #draw the box, add reports
     @pdf.bounding_box([@x_pos, @y_pos], :width => 300, :height => 400) do  
       texts.each do |i|
-        @pdf.text i['incident']['incidentdescription']
+        @pdf.text((i['incident']['incidentdescription']).gsub(/IDUshahidi:\W+\d+/, ''))
         @pdf.start_new_page
       end    
     end

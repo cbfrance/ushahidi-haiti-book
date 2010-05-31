@@ -1,9 +1,10 @@
 require 'rubygems'
-$LOAD_PATH.unshift("/Users/chris/git/prawn/lib")
+$LOAD_PATH.unshift("/Users/davidnolen/development/ruby/prawn/lib")
 require 'prawn'
+require 'json'
 require "rubygems"
 require "httparty"
-require "ap"
+#require "ap"
 require 'crack'
 
 class Book
@@ -62,7 +63,7 @@ class Cache
     p "success"
     data = response.body
     puts data
-    jsonfile.write(data)
+    jsonfile.write(JSON.pretty_generate(Crack::JSON.parse(data)))
 
     puts "cache written"
     jsonfile.close

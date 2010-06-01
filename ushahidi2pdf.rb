@@ -5,6 +5,8 @@ require 'json'
 require "rubygems"
 require "httparty"
 require 'crack'
+require 'ostruct'
+require 'ap'
 
 # INSTANCE= "http://haiti.ushahidi.com/api?task=incidents&by=all"
 INSTANCE_URL= "http://roguegenius.com/africa/api?task=incidents&by=sinceid&resp=json&id="
@@ -33,7 +35,7 @@ module PrintingPress
       @book.font_size 6
     end
   
-    def bind(incidents)
+    def write(incidents)
       typeset_date
       #draw the box, add reports
       incidents.each do |i|
@@ -46,7 +48,7 @@ module PrintingPress
         @book.text(i['incident']['incidentdate'])
         @book.text(i['incident']['locationlatitude'])
         @book.text(i['incident']['locationlongitude'])
-        @book.start_new_page
+        @book.start_new_IncidentCount
       end
     end
     def print
@@ -70,49 +72,47 @@ module PrintingPress
       return parsed_results['payload']['incidents']
     end
   
-    def write(data, filename= "cache.json")
-      jsonfile= File.new(filename, "w")
-      jsonfile.write(JSON.pretty_generate(Crack::JSON.parse(data)))
+    def write(json, filename= "cache.json")
+      if File.exists?(filename)
+        jsonfile=File.open(filename, "a")
+      else
+        jsonfile= File.new(filename, "w")
+      end
+      jsonfile.write(JSON.pretty_generate(json))
       jsonfile.close
       p "... cache written"
     end
   end
 
   class Crawler
-
-    def initialize
-      attr_accessor :sinceid
-      @sinceid= 0
-    end
-              
-    # start at the first one
-    def start(current_id= "0", prev_id= "null")
-      #stop automatically when you get the same record twice
-      while @sinceid != prev_sinceid
-        instance= "#{INSTANCE_URL}#{sinceid}"
-        p "off to #{instance}"
-        crawled_pages= []
-        crawled_pages.push("instance")
-        p "Crawled pages is now #{crawled_pages.inspect}"
-        data= HTTParty.get(instance).body
-        parsed_data= Crack::JSON.parse(data)
-        last_one= parsed.data[payload][incidents].last
-        p "the last incident is #{last_one.inspect}"
-        p "completed lookup to record #{prev_sinceid}"
-        return last_one[incidentid], prev_sinceid
-      end
+    def crawl(url)
+      p "starting to crawl: #{url}"
+      data= HTTParty.get(url).body
+      parsed_data= Crack::JSON.parse(data)
+      @incidents= parsed_data["payload"]["incidents"]
+      return @incidents
     end
   end
 end
 
-book= PrintingPress::Book.new
+# book= PrintingPress::Book.new
 crawler= PrintingPress::Crawler.new
 cache= PrintingPress::Cache.new
 
-unless cache.full?
-  cache.write(crawler.start)
+sinceid=0
+until sinceid > 5000 do
+  # construct the url with sinceid
+  theurl= "#{INSTANCE_URL}#{sinceid}"
+  crawler.crawl(theurl).each do |json|
+    cache.write(json)
+  end
+  sinceid += 10000
+  # parse the results into a struct
+  # result_count = the largest incident id
+  # sinceid += result_count
 end
 
-book.bind(cache.read)
-p "printing!"
-book.print
+
+
+
+

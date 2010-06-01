@@ -8,8 +8,8 @@ require 'crack'
 require 'ostruct'
 require 'ap'
 
-# INSTANCE= "http://haiti.ushahidi.com/api?task=incidents&by=all"
-INSTANCE_URL= "http://roguegenius.com/africa/api?task=incidents&by=sinceid&resp=json&id="
+INSTANCE_URL= "http://haiti.ushahidi.com/api?task=incidents&by=sinceid&resp=json&id="
+# INSTANCE_URL= "http://roguegenius.com/africa/api?task=incidents&by=sinceid&resp=json&id="
 
 module PrintingPress
   class Book
@@ -95,24 +95,49 @@ module PrintingPress
   end
 end
 
-# book= PrintingPress::Book.new
+book= PrintingPress::Book.new
 crawler= PrintingPress::Crawler.new
 cache= PrintingPress::Cache.new
 
-sinceid=0
-until sinceid > 5000 do
-  # construct the url with sinceid
-  theurl= "#{INSTANCE_URL}#{sinceid}"
-  crawler.crawl(theurl).each do |json|
-    cache.write(json)
+def clean(incidents)
+  incidents.each do |i|
+    p i["#{incidentid},"]
   end
-  sinceid += 10000
-  # parse the results into a struct
-  # result_count = the largest incident id
-  # sinceid += result_count
 end
 
+def fill_cache
+  sinceid=0
+  until sinceid > 5000 do
+    # construct the url with sinceid
+    theurl= "#{INSTANCE_URL}#{sinceid}"
+    incidents= crawler.crawl(theurl)
+    incidents.each do |json|
+      cache.write(json)
+    end
+    sleep 2
+    sinceid += incidents.last["incident"]["incidentid"].to_i
+  end
+end
 
-
-
-
+def filter_data(incidents)
+  p "#{incidents.count} before uniq"
+  p "uniqifying"
+  filtered_incidents= incidents.uniq
+  p "#{incidents.count} after uniq"
+  return filtered_incidents
+end
+  
+if ARGV[0] = "cache"
+  if cache.full?
+    p "looks like your cache has data -- try deleting it first."
+  else
+    fill_cache
+  end
+elsif ARGV[0] = "filter"
+  incidents = cache.read
+  filter_data(incidents)
+elsif ARGV[0] = "print"
+  book.print(cache.read)
+else
+  p "usage: ruby ushahidi2pdf.rb [cache|filter|print]"
+end

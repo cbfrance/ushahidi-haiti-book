@@ -83,17 +83,28 @@ module PrintingPress
       return @incidents
     end
   
-    def write(json, filename= "cache.json")
+    def write_json(data, filename= "cache.json")
       #writes one page at a time to a file, fill_cache wraps this.
       if File.exists?(filename)
         jsonfile=File.open(filename, "a")
       else
         jsonfile= File.new(filename, "w")
       end
-      jsonfile.write(JSON.pretty_generate(json))
+      jsonfile.write(JSON.pretty_generate(data))
+      jsonfile.write(",")
       jsonfile.close
       p "... cache written"
     end
+    def write_text(text, filename= "cache.json")
+      if File.exists?(filename)
+        jsonfile=File.open(filename, "a")
+      else
+        jsonfile= File.new(filename, "w")
+      end
+      jsonfile.write(text)
+      jsonfile.close
+    end
+    
   end
 
 # ===========
@@ -119,16 +130,20 @@ module PrintingPress
       crawler= PrintingPress::Crawler.new  
       cache= PrintingPress::Cache.new
       sinceid=0
+      cache.write_text('{"incidents":[')
       until sinceid > 5000 do
         # incrementing sinceid to work around API limits
         theurl= "#{INSTANCE_URL}#{sinceid}"
         incidents= crawler.crawl(theurl)
         incidents.each do |json|
+          prev_json ||= "none"
           #write the json incident record unless it's the same as the last one
-          cache.write(json) unless json == prev_json
+          cache.write_json(json) unless (json == prev_json)
           # increment the filter trap
-          prev_json= json
+          prev_json = json
+          
         end
+      cache.write_text(']}')
         sleep 2
         sinceid += incidents.last["incident"]["incidentid"].to_i
       end

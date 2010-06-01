@@ -1,4 +1,4 @@
-{
+{"incidents":[{
   "incident": {
     "locationname": "Lebohang",
     "incidentdate": "2010-05-19 12:00:00",
@@ -21,7 +21,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Lebohang",
     "incidentdate": "2010-04-28 12:00:00",
@@ -51,7 +51,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Lebohang",
     "incidentdate": "2010-04-28 12:00:00",
@@ -74,7 +74,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Lebohang",
     "incidentdate": "2010-04-30 18:00:00",
@@ -97,7 +97,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Lebohang",
     "incidentdate": "2010-03-27 12:00:00",
@@ -120,7 +120,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Leslie",
     "incidentdate": "2010-03-20 12:00:00",
@@ -143,7 +143,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Legohang",
     "incidentdate": "2010-03-27 12:00:00",
@@ -166,7 +166,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Olievenhoutbosch",
     "incidentdate": "2010-05-19 12:00:00",
@@ -189,7 +189,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Mpumalanga Legislature",
     "incidentdate": "2010-05-14 14:15:00",
@@ -212,7 +212,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Siyathemba",
     "incidentdate": "2009-07-24 12:00:00",
@@ -235,7 +235,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Siyathemba township",
     "incidentdate": "2009-07-22 12:00:00",
@@ -258,7 +258,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Siyathemba township",
     "incidentdate": "2009-07-20 00:00:00",
@@ -281,7 +281,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Siyathemba",
     "incidentdate": "2009-07-19 12:00:00",
@@ -304,7 +304,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Siyathemba",
     "incidentdate": "2009-08-04 12:00:00",
@@ -327,7 +327,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Siyathemba",
     "incidentdate": "2010-03-31 12:00:00",
@@ -350,7 +350,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Emzinoni",
     "incidentdate": "2009-10-14 13:42:00",
@@ -373,7 +373,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Phola / Ogies",
     "incidentdate": "2010-03-18 12:00:00",
@@ -403,7 +403,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Chochocho",
     "incidentdate": "2010-03-14 12:00:00",
@@ -426,7 +426,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Acornhoek",
     "incidentdate": "2010-03-14 14:00:00",
@@ -449,7 +449,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Siyathemba",
     "incidentdate": "2010-02-09 12:00:00",
@@ -486,7 +486,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},]}{
   "incident": {
     "locationname": "Siyathemba",
     "incidentdate": "2010-02-12 00:00:00",
@@ -509,7 +509,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Mpumalanga Legislature",
     "incidentdate": "2010-02-18 00:00:00",
@@ -532,7 +532,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Siyathemba",
     "incidentdate": "2010-02-07 12:00:00",
@@ -555,7 +555,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Siyathemba",
     "incidentdate": "2010-02-08 12:00:00",
@@ -599,7 +599,7 @@
       "mediatype": "2"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Phola / Ogies",
     "incidentdate": "2010-02-18 02:45:00",
@@ -622,7 +622,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Kinross",
     "incidentdate": "2009-10-14 00:00:00",
@@ -645,7 +645,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Siyazenzela / Perdekop",
     "incidentdate": "2010-04-06 12:00:00",
@@ -668,7 +668,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Siyazenzela / Perdekop",
     "incidentdate": "2010-04-05 12:00:00",
@@ -691,7 +691,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Thanduku Khanya",
     "incidentdate": "2009-06-15 12:00:00",
@@ -714,7 +714,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Mpumalanga Legislature",
     "incidentdate": "2010-05-21 16:51:00",
@@ -737,7 +737,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Kwaggafontein",
     "incidentdate": "2010-05-20 12:00:00",
@@ -760,7 +760,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Dundonald",
     "incidentdate": "2010-02-13 12:00:00",
@@ -783,7 +783,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "KwaZanele",
     "incidentdate": "2010-03-26 20:00:00",
@@ -806,7 +806,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "KwaZanele / Breyten",
     "incidentdate": "2010-03-27 00:00:00",
@@ -829,7 +829,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "KwaZanele / Breyten",
     "incidentdate": "2010-03-04 00:00:00",
@@ -852,7 +852,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Sakhile / Standerton",
     "incidentdate": "2009-10-11 00:00:00",
@@ -875,7 +875,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "eMbalenhle / Secunda",
     "incidentdate": "2009-10-14 00:00:00",
@@ -898,7 +898,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "eMbalenhle / Secunda",
     "incidentdate": "2010-03-25 00:00:00",
@@ -915,7 +915,7 @@
   "media": [
 
   ]
-}{
+},{
   "incident": {
     "locationname": "Moloto",
     "incidentdate": "2010-03-24 00:00:00",
@@ -938,7 +938,7 @@
       "mediatype": "4"
     }
   ]
-}{
+},{
   "incident": {
     "locationname": "Moloto",
     "incidentdate": "2010-03-23 00:00:00",
@@ -961,4 +961,4 @@
       "mediatype": "4"
     }
   ]
-}
+},]}]}

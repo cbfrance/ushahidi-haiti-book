@@ -95,9 +95,6 @@ module PrintingPress
   end
 end
 
-book= PrintingPress::Book.new
-crawler= PrintingPress::Crawler.new
-cache= PrintingPress::Cache.new
 
 def clean(incidents)
   incidents.each do |i|
@@ -106,6 +103,9 @@ def clean(incidents)
 end
 
 def fill_cache
+  book= PrintingPress::Book.new
+  crawler= PrintingPress::Crawler.new  
+  cache= PrintingPress::Cache.new
   sinceid=0
   until sinceid > 5000 do
     # construct the url with sinceid
@@ -128,6 +128,7 @@ def filter_data(incidents)
 end
   
 if ARGV[0] = "cache"
+  cache= PrintingPress::Cache.new
   if cache.full?
     p "looks like your cache has data -- try deleting it first."
   else

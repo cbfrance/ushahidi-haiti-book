@@ -8,10 +8,15 @@ require 'crack'
 require 'ostruct'
 require 'ap'
 
-INSTANCE_URL= "http://haiti.ushahidi.com/api?task=incidents&by=sinceid&resp=json&id="
-# INSTANCE_URL= "http://roguegenius.com/africa/api?task=incidents&by=sinceid&resp=json&id="
+# INSTANCE_URL= "http://haiti.ushahidi.com/api?task=incidents&by=sinceid&resp=json&id="
+INSTANCE_URL= "http://roguegenius.com/africa/api?task=incidents&by=sinceid&resp=json&id="
 
 module PrintingPress
+
+# ========
+# = book =
+# ========
+
   class Book
     def initialize
       @book = Prawn::Document.new
@@ -57,22 +62,29 @@ module PrintingPress
     end
   end
 
+# =========
+# = cache =
+# =========
+
   class Cache
     def full?
       File.exist?("cache.json")
     end
-    
+
     def read(filename="cache.json")
       p "... reading cache"
       jsonfile= File.open(filename, "r")
       results= jsonfile.read
+      p "about to parse!"
       parsed_results= Crack::JSON.parse(results)
       jsonfile.close
       p "... incidents loaded"
-      return parsed_results['payload']['incidents']
+      @incidents= parsed_results['payload']['incidents']
+      return @incidents
     end
   
     def write(json, filename= "cache.json")
+      #writes one page at a time to a file, fill_cache wraps this.
       if File.exists?(filename)
         jsonfile=File.open(filename, "a")
       else
@@ -84,6 +96,10 @@ module PrintingPress
     end
   end
 
+# ===========
+# = crawler =
+# ===========
+
   class Crawler
     def crawl(url)
       p "starting to crawl: #{url}"
@@ -93,51 +109,67 @@ module PrintingPress
       return @incidents
     end
   end
-end
 
+# ==========
+# = worker =
+# ==========
 
-def clean(incidents)
-  incidents.each do |i|
-    p i["#{incidentid},"]
-  end
-end
-
-def fill_cache
-  book= PrintingPress::Book.new
-  crawler= PrintingPress::Crawler.new  
-  cache= PrintingPress::Cache.new
-  sinceid=0
-  until sinceid > 5000 do
-    # construct the url with sinceid
-    theurl= "#{INSTANCE_URL}#{sinceid}"
-    incidents= crawler.crawl(theurl)
-    incidents.each do |json|
-      cache.write(json)
+  class Worker
+    def fill_cache
+      crawler= PrintingPress::Crawler.new  
+      cache= PrintingPress::Cache.new
+      sinceid=0
+      until sinceid > 5000 do
+        # incrementing sinceid to work around API limits
+        theurl= "#{INSTANCE_URL}#{sinceid}"
+        incidents= crawler.crawl(theurl)
+        incidents.each do |json|
+          #write the json incident record
+          cache.write(json)
+        end
+        sleep 2
+        sinceid += incidents.last["incident"]["incidentid"].to_i
+      end
     end
-    sleep 2
-    sinceid += incidents.last["incident"]["incidentid"].to_i
+
+    def clean(incidents)
+      incidents.each do |i|
+        p i["#{incidentid},"]
+      end
+    end
+
+    def filter_data(incidents)
+      p "#{incidents.count} before uniq"
+      p "uniqifying"
+      filtered_incidents= incidents.uniq
+      p "#{incidents.count} after uniq"
+      return filtered_incidents
+    end
   end
+  
 end
 
-def filter_data(incidents)
-  p "#{incidents.count} before uniq"
-  p "uniqifying"
-  filtered_incidents= incidents.uniq
-  p "#{incidents.count} after uniq"
-  return filtered_incidents
-end
-  
-if ARGV[0] = "cache"
-  cache= PrintingPress::Cache.new
+
+# ===========
+# = routine =
+# ===========
+
+if ARGV[0] == "cache"
+  worker=PrintingPress::Worker.new
+  cache=PrintingPress::Cache.new
   if cache.full?
     p "looks like your cache has data -- try deleting it first."
   else
-    fill_cache
+    worker.fill_cache
   end
-elsif ARGV[0] = "filter"
+  
+elsif ARGV[0] == "filter"
+  cache= PrintingPress::Cache.new
   incidents = cache.read
   filter_data(incidents)
-elsif ARGV[0] = "print"
+elsif ARGV[0] == "print"
+  book= PrintingPress::Book.new
+  cache= PrintingPress::Cache.new
   book.print(cache.read)
 else
   p "usage: ruby ushahidi2pdf.rb [cache|filter|print]"

@@ -83,24 +83,25 @@ module PrintingPress
       return @incidents
     end
   
-    def write_json(data, filename= "cache.json")
-      #writes one page at a time to a file, fill_cache wraps this.
+    def discover_file(filename)
       if File.exists?(filename)
         jsonfile=File.open(filename, "a")
       else
         jsonfile= File.new(filename, "w")
       end
+      return jsonfile
+    end
+    
+    def write_json(data, filename= "cache.json")
+      #writes one page at a time to a file, fill_cache wraps this.
+      jsonfile= discover_file(filename)
       jsonfile.write(JSON.pretty_generate(data))
       jsonfile.write(",")
       jsonfile.close
       p "... cache written"
     end
     def write_text(text, filename= "cache.json")
-      if File.exists?(filename)
-        jsonfile=File.open(filename, "a")
-      else
-        jsonfile= File.new(filename, "w")
-      end
+      jsonfile= discover_file(filename)      
       jsonfile.write(text)
       jsonfile.close
     end

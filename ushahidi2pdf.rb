@@ -124,8 +124,10 @@ module PrintingPress
         theurl= "#{INSTANCE_URL}#{sinceid}"
         incidents= crawler.crawl(theurl)
         incidents.each do |json|
-          #write the json incident record
-          cache.write(json)
+          #write the json incident record unless it's the same as the last one
+          cache.write(json) unless json == prev_json
+          # increment the filter trap
+          prev_json= json
         end
         sleep 2
         sinceid += incidents.last["incident"]["incidentid"].to_i

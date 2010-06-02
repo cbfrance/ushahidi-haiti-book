@@ -177,19 +177,12 @@ module PrintingPress
           prev_json= json
           p prev_json
         end
-        sleep 2
+        #be nice
+        sleep 1
         sinceid = incidents.last["incident"]["incidentid"].to_i
       end
       p "writing the closing bit"
       cache.write_text('{}]}')
-    end
-
-    def filter_data(incidents)
-      p "#{incidents.count} before uniq"
-      p "uniqifying"
-      filtered_incidents= incidents.uniq
-      p "#{incidents.count} after uniq"
-      return filtered_incidents
     end
   end
 end
@@ -202,7 +195,7 @@ if ARGV[0] == "cache"
   worker=PrintingPress::Worker.new
   cache=PrintingPress::Cache.new
   if cache.full?
-    p "looks like your cache has data -- try deleting it first."
+    p "looks like your cache has data in it. Delete it or print."
   else
     worker.fill_cache
   end  

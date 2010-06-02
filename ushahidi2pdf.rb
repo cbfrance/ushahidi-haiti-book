@@ -8,8 +8,9 @@ require 'crack'
 require 'ostruct'
 require 'ap'
 
-# INSTANCE_URL= "http://haiti.ushahidi.com/api?task=incidents&by=sinceid&resp=json&id="
-INSTANCE_URL= "http://roguegenius.com/africa/api?task=incidents&by=sinceid&resp=json&id="
+INSTANCE_URL= "http://haiti.ushahidi.com/api?task=incidents&by=sinceid&resp=json&id="
+# INSTANCE_URL= "http://roguegenius.com/africa/api?task=incidents&by=sinceid&resp=json&id="
+LIMIT=100
 
 module PrintingPress
 
@@ -25,42 +26,45 @@ module PrintingPress
       @y_pos = ((@book.bounds.height / 2) + 200)
       
     end
+  
     def typeset_header
-      @book.font_families.update("Hoefler" => { :normal => "Hoefler Text.dfont" })
-      @book.font("Hoefler", :style => :normal)
-      @book.font_size 15
-    end
-  
-    def typeset_date
+      @book.font("Courier", :style => :bold)
       @book.font_size 10
-      @book.font("Courier")
     end
   
-    def typeset_latlong
+    def typeset_body
+      @book.font_size 10
+      @book.font("Courier", :style => :normal)
+    end
+  
+    def typeset_timestamp
       @book.font_size 6
     end
   
     def print(incidents)
-      typeset_date
       incidents.each do |i|
         p "printing! This incident: #{i.inspect}"
         if i.empty? 
-            p "last one!"
-            p "done rendering, now printing for reals!"
-            @book.render_file("book.pdf")
-            `open book.pdf`
+          #return
         else
           @book.bounding_box([@x_pos, @y_pos], :width => 300, :height => 500) do  
+            typeset_header
             @book.text((i['incident']['incidenttitle']))
             @book.text("--------------------------------------------------")
+            typeset_body
             @book.text((i['incident']['incidentdescription']).gsub(/IDUshahidi:\W+\d+/, ''))
+            typeset_timestamp
+            @book.text(i['incident']['incidentmedia']) unless i['incident']['incidentmedia'] == nil
+            @book.text(i['incident']['incidentdate']) unless i['incident']['incidentdate'] == nil
+            @book.text(i['incident']['locationlatitude']) unless i['incident']['incidentlatitude'] == nil
+            @book.text(i['incident']['locationlongitude']) unless i['incident']['incidentlongitude'] == nil
           end
-          @book.text(i['incident']['incidentmedia']) unless i['incident']['incidentmedia'] == nil
-          @book.text(i['incident']['incidentdate']) unless i['incident']['incidentdate'] == nil
-          @book.text(i['incident']['locationlatitude']) unless i['incident']['incidentlatitude'] == nil
-          @book.text(i['incident']['locationlongitude']) unless i['incident']['incidentlongitude'] == nil
+          @book.start_new_page
         end
       end
+      p "done rendering, now printing ..."
+      @book.render_file("book.pdf")
+      `open book.pdf`
     end
   end
 
@@ -134,8 +138,7 @@ module PrintingPress
       cache= PrintingPress::Cache.new
       sinceid=0
       cache.write_text('{"incidents":[')
-      limit= 48
-      until sinceid > limit do
+      until sinceid > LIMIT do
         # incrementing sinceid to work around API limits
         theurl= "#{INSTANCE_URL}#{sinceid}"
         incidents= crawler.crawl(theurl)

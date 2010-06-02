@@ -18,7 +18,7 @@ INSTANCE_URL= "http://haiti.ushahidi.com/api?task=incidents&by=sinceid&resp=json
 READ_LIMIT=4040
 
 #lower it for test printing
-PRINT_LIMIT=100
+PRINT_LIMIT=100000
 
 #anything larger than this will be trimmed
 MAX_INCIDENT_SIZE= 1500
@@ -39,7 +39,7 @@ module PrintingPress
     end
   
     def typeset_header
-      @book.font("Courier", :style => :bold)
+      @book.font("Helvetica", :style => :bold)
       @book.font_size 10
     end
   
@@ -80,8 +80,7 @@ module PrintingPress
             typeset_timestamp
             @book.text("\n")
             @book.text(i['incident']['incidentdate']) unless i['incident']['incidentdate'] == nil
-            @book.text(i['incident']['locationlatitude']) unless i['incident']['incidentlatitude'] == nil
-            @book.text(i['incident']['locationlongitude']) unless i['incident']['incidentlongitude'] == nil
+            @book.text(i['incident']['locationname']) unless i['incident']['locationname'] == nil
             @previous_id= @current_id
           end
           @book.start_new_page

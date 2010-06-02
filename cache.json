@@ -486,7 +486,7 @@
       "mediatype": "4"
     }
   ]
-},]}{
+},{
   "incident": {
     "locationname": "Siyathemba",
     "incidentdate": "2010-02-12 00:00:00",
@@ -961,4 +961,165 @@
       "mediatype": "4"
     }
   ]
-},]}]}
+},{
+  "incident": {
+    "locationname": "Moutse",
+    "incidentdate": "2009-02-14 00:00:00",
+    "locationlatitude": "-25.231886",
+    "incidentid": "43",
+    "incidentdescription": "14 February 2009 (Saturday)\n\nMoutse protesters tear down & burn ANC posters, demanding cession from Limpopo and reincorporation into Mpumalanga.",
+    "locationlongitude": "29.046822",
+    "incidentactive": "1",
+    "incidentverified": "0",
+    "locationid": "43",
+    "incidentmode": "1",
+    "incidenttitle": "PROTEST - Moutse residents demand reincorporation into Mpumalanga"
+  },
+  "media": [
+    {
+      "mediathumb": null,
+      "medialink": "http://www.sabcnews.com/portal/site/SABCNews/menuitem.5c4f8fe7ee929f602ea12ea1674daeb9/?vgnextoid=0d9dd1df8657f110VgnVCM10000077d4ea9bRCRD&vgnextfmt=default",
+      "mediatitle": null,
+      "mediaid": "107",
+      "mediatype": "4"
+    }
+  ]
+},{
+  "incident": {
+    "locationname": "Verena / Thembisile Hani",
+    "incidentdate": "2010-03-23 00:00:00",
+    "locationlatitude": "-25.478845",
+    "incidentid": "44",
+    "incidentdescription": "23 March 2010 (Tuesday)\n\nProtesters \"go on rampage\" after politicians fail to explain service delivery delays. (need more details).",
+    "locationlongitude": "29.019098",
+    "incidentactive": "1",
+    "incidentverified": "0",
+    "locationid": "44",
+    "incidentmode": "1",
+    "incidenttitle": "PROTEST - Residents go on 'rampage'"
+  },
+  "media": [
+    {
+      "mediathumb": null,
+      "medialink": "http://sabcnews.com/portal/site/SABCNews/menuitem.cfe7d3eef5cd31a5a707a707674daeb9/?vgnextoid=ce4538dab9a87210VgnVCM10000077d4ea9bRCRD&vgnextfmt=format9%20&orderListkeyId=4ae79af5d9dfe110VgnVCM10000077d4ea9bRCRD&articleId=ce4538dab9a87210VgnVCM10000077d4e",
+      "mediatitle": null,
+      "mediaid": "108",
+      "mediatype": "4"
+    }
+  ]
+},{
+  "incident": {
+    "locationname": "Newtown / Middelburg",
+    "incidentdate": "2010-02-24 00:00:00",
+    "locationlatitude": "-25.741921",
+    "incidentid": "45",
+    "incidentdescription": "24 February 2010 (Wednesday)\n\nProtesters barricade roads, disrupt taxi & other public transport services and demand dismissal of Steve Tshwete Municipality's mayor after council fails to answer demands for flushing toilets & other basic services.",
+    "locationlongitude": "29.425764",
+    "incidentactive": "1",
+    "incidentverified": "0",
+    "locationid": "45",
+    "incidentmode": "1",
+    "incidenttitle": "PROTEST - Residents barricade roads in demand for flushing toilets"
+  },
+  "media": [
+    {
+      "mediathumb": null,
+      "medialink": "http://www.sabcnews.co.za/portal/site/SABCNews/menuitem.4db0398e8cee80702ea12ea1674daeb9/?vgnextoid=ef622132a9307210VgnVCM10000077d4ea9bRCRD&vgnextfmt=print",
+      "mediatitle": null,
+      "mediaid": "109",
+      "mediatype": "4"
+    }
+  ]
+},{
+  "incident": {
+    "locationname": "Mhluzi / Middelburg",
+    "incidentdate": "2010-03-29 00:00:00",
+    "locationlatitude": "-25.75429",
+    "incidentid": "46",
+    "incidentdescription": "29 March 2010 (Monday)\n\n14x foreign-owned businesses attacked by protestors in Mhluzi township. Pakistani, Ethiopian and Somalian properties specifically targeted.\n\n1x shop torched. No injuries reported.\n\n13x arrests reported by police.",
+    "locationlongitude": "29.435291",
+    "incidentactive": "1",
+    "incidentverified": "0",
+    "locationid": "46",
+    "incidentmode": "1",
+    "incidenttitle": "PROTEST - Mob attacks foreigners, torches shop"
+  },
+  "media": [
+    {
+      "mediathumb": null,
+      "medialink": "http://www.timeslive.co.za/sundaytimes/article384574.ece/Looters-target-shops-owned-by-foreigners",
+      "mediatitle": null,
+      "mediaid": "110",
+      "mediatype": "4"
+    }
+  ]
+},{
+  "incident": {
+    "locationname": "Middelburg",
+    "incidentdate": "2010-02-24 00:00:00",
+    "locationlatitude": "-25.768088",
+    "incidentid": "47",
+    "incidentdescription": "24 February 2010 (Wednesday)\n\n10,000x demonstrators (SABC estimate) gather outside Middelburg council building to accuse mayor Mantlhakeng Mahlangu of \"dictatorship\" and failing to deliver basic services.",
+    "locationlongitude": "29.454904",
+    "incidentactive": "1",
+    "incidentverified": "0",
+    "locationid": "47",
+    "incidentmode": "1",
+    "incidenttitle": "PROTEST - Thousands march on mayor, demanding flushing toilets"
+  },
+  "media": [
+    {
+      "mediathumb": null,
+      "medialink": "http://www.sabcnews.com/portal/site/SABCNews/menuitem.5c4f8fe7ee929f602ea12ea1674daeb9/?vgnextoid=7c6f291b70ff6210VgnVCM10000077d4ea9bRCRD&vgnextfmt=default",
+      "mediatitle": null,
+      "mediaid": "111",
+      "mediatype": "4"
+    }
+  ]
+},{
+  "incident": {
+    "locationname": "Siyathuthuka / Belfast",
+    "incidentdate": "2009-10-13 00:00:00",
+    "locationlatitude": "-25.675723",
+    "incidentid": "48",
+    "incidentdescription": "13 October 2009 (Tuesday)\n\n1x policeman injured during stoning of eMakhazeni Municipal Manager Oscar Nkosi after memorandum handed over.\n\n18x arrested after protesters barricade streets, stone police & municipal buildings.",
+    "locationlongitude": "29.992676",
+    "incidentactive": "1",
+    "incidentverified": "0",
+    "locationid": "48",
+    "incidentmode": "1",
+    "incidenttitle": "PROTEST - Policeman injured, 18 arrested after mob attacks mayor"
+  },
+  "media": [
+    {
+      "mediathumb": null,
+      "medialink": "http://www.sabcnews.com/portal/site/SABCNews/menuitem.5c4f8fe7ee929f602ea12ea1674daeb9/?vgnextfmt=default&amp;",
+      "mediatitle": null,
+      "mediaid": "113",
+      "mediatype": "4"
+    }
+  ]
+},{
+  "incident": {
+    "locationname": "Sakhelwe / Dullstroom",
+    "incidentdate": "2009-10-14 00:00:00",
+    "locationlatitude": "-25.408702",
+    "incidentid": "49",
+    "incidentdescription": "14 October 2009 (Wednesday)\n\n43x arrested for for malicious damage to property during protest (details needed).",
+    "locationlongitude": "30.089836",
+    "incidentactive": "1",
+    "incidentverified": "0",
+    "locationid": "49",
+    "incidentmode": "1",
+    "incidenttitle": "PROTEST - Police arrest 43 demonstrators"
+  },
+  "media": [
+    {
+      "mediathumb": null,
+      "medialink": "http://www.sabcnews.com/portal/site/SABCNews/menuitem.5c4f8fe7ee929f602ea12ea1674daeb9/?vgnextoid=298aeba326654210VgnVCM10000077d4ea9bRCRD&vgnextfmt=default",
+      "mediatitle": null,
+      "mediaid": "114",
+      "mediatype": "4"
+    }
+  ]
+},{}]}

@@ -132,22 +132,24 @@ module PrintingPress
       cache= PrintingPress::Cache.new
       sinceid=0
       cache.write_text('{"incidents":[')
-      until sinceid > 5000 do
+      limit= 48
+      until sinceid > limit do
         # incrementing sinceid to work around API limits
         theurl= "#{INSTANCE_URL}#{sinceid}"
         incidents= crawler.crawl(theurl)
         incidents.each do |json|
           prev_json ||= "none"
           #write the json incident record unless it's the same as the last one
-          cache.write_json(json) unless (json == prev_json)
+          cache.write_json(json)
           # increment the filter trap
-          prev_json = json
-          
+          prev_json= json
+          p prev_json
         end
-      cache.write_text(']}')
         sleep 2
-        sinceid += incidents.last["incident"]["incidentid"].to_i
+        sinceid = incidents.last["incident"]["incidentid"].to_i
       end
+      p "writing the closing bit"
+      cache.write_text('{}]}')
     end
 
     def clean(incidents)
@@ -164,7 +166,6 @@ module PrintingPress
       return filtered_incidents
     end
   end
-  
 end
 
 

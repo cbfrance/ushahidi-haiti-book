@@ -42,20 +42,25 @@ module PrintingPress
   
     def print(incidents)
       typeset_date
-      #draw the box, add reports
       incidents.each do |i|
-        @book.bounding_box([@x_pos, @y_pos], :width => 300, :height => 500) do  
-          @book.text((i['incident']['incidenttitle']))
-          @book.text("--------------------------------------------------")
-          @book.text((i['incident']['incidentdescription']).gsub(/IDUshahidi:\W+\d+/, ''))
+        p "printing! This incident: #{i.inspect}"
+        if i.empty? 
+            p "last one!"
+            p "done rendering, now printing for reals!"
+            @book.render_file("book.pdf")
+            `open book.pdf`
+        else
+          @book.bounding_box([@x_pos, @y_pos], :width => 300, :height => 500) do  
+            @book.text((i['incident']['incidenttitle']))
+            @book.text("--------------------------------------------------")
+            @book.text((i['incident']['incidentdescription']).gsub(/IDUshahidi:\W+\d+/, ''))
+          end
+          @book.text(i['incident']['incidentmedia']) unless i['incident']['incidentmedia'] == nil
+          @book.text(i['incident']['incidentdate']) unless i['incident']['incidentdate'] == nil
+          @book.text(i['incident']['locationlatitude']) unless i['incident']['incidentlatitude'] == nil
+          @book.text(i['incident']['locationlongitude']) unless i['incident']['incidentlongitude'] == nil
         end
-        @book.text(i['incident']['incidentmedia'])
-        @book.text(i['incident']['incidentdate'])
-        @book.text(i['incident']['locationlatitude'])
-        @book.text(i['incident']['locationlongitude'])
       end
-      @book.render_file("book.pdf")
-      `open book.pdf`
     end
   end
 
@@ -174,8 +179,7 @@ if ARGV[0] == "cache"
 elsif ARGV[0] == "print"
   book= PrintingPress::Book.new
   cache= PrintingPress::Cache.new
-  incidents= cache.read
-  book.print(incidents)
+  book.print(incidents= cache.read)
 else
   p "usage: ruby ushahidi2pdf.rb [cache|print]"
 end

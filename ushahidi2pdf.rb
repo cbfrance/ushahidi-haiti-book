@@ -43,21 +43,30 @@ module PrintingPress
   
     def print(incidents)
       incidents.each do |i|
-        p "printing! This incident: #{i.inspect}"
         if i.empty? 
-          #return
+          p "empty incident, skipping ..."
+        elsif i['incident']['incidentdescription'].length > 2000
+          p "incident too big: #{i['incident']['incidentdescription']}"
+        elsif i['incident']['incidentid'] == @previous_id
+          p "duplicate incident, skipping ..."
         else
+          @current_id= i['incident']['incidentid']
+          p "printing! This incident: #{@current_id}"
+          @previous_id ||= "unset"
+          p "previous incident: #{@previous_id}"
           @book.bounding_box([@x_pos, @y_pos], :width => 300, :height => 500) do  
             typeset_header
             @book.text((i['incident']['incidenttitle']))
-            @book.text("--------------------------------------------------")
+            @book.text("\n")
             typeset_body
             @book.text((i['incident']['incidentdescription']).gsub(/IDUshahidi:\W+\d+/, ''))
             typeset_timestamp
+            @book.text("\n")
             @book.text(i['incident']['incidentmedia']) unless i['incident']['incidentmedia'] == nil
             @book.text(i['incident']['incidentdate']) unless i['incident']['incidentdate'] == nil
             @book.text(i['incident']['locationlatitude']) unless i['incident']['incidentlatitude'] == nil
             @book.text(i['incident']['locationlongitude']) unless i['incident']['incidentlongitude'] == nil
+            @previous_id= @current_id
           end
           @book.start_new_page
         end
@@ -65,6 +74,7 @@ module PrintingPress
       p "done rendering, now printing ..."
       @book.render_file("book.pdf")
       `open book.pdf`
+      
     end
   end
 
@@ -98,8 +108,9 @@ module PrintingPress
       return jsonfile
     end
     
+    
+    #Worker.fill_cache relies on these two writers.
     def write_json(data, filename= "cache.json")
-      #writes one page at a time to a file, fill_cache wraps this.
       jsonfile= discover_file(filename)
       jsonfile.write(JSON.pretty_generate(data))
       jsonfile.write(",")

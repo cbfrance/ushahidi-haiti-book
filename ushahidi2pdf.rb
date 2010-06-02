@@ -40,7 +40,7 @@ module PrintingPress
       @book.font_size 6
     end
   
-    def write(incidents)
+    def print(incidents)
       typeset_date
       #draw the box, add reports
       incidents.each do |i|
@@ -53,10 +53,7 @@ module PrintingPress
         @book.text(i['incident']['incidentdate'])
         @book.text(i['incident']['locationlatitude'])
         @book.text(i['incident']['locationlongitude'])
-        @book.start_new_IncidentCount
       end
-    end
-    def print
       @book.render_file("book.pdf")
       `open book.pdf`
     end
@@ -79,8 +76,8 @@ module PrintingPress
       parsed_results= Crack::JSON.parse(results)
       jsonfile.close
       p "... incidents loaded"
-      @incidents= parsed_results['payload']['incidents']
-      return @incidents
+      incidents= parsed_results['incidents']
+      return incidents
     end
   
     def discover_file(filename)
@@ -152,12 +149,6 @@ module PrintingPress
       cache.write_text('{}]}')
     end
 
-    def clean(incidents)
-      incidents.each do |i|
-        p i["#{incidentid},"]
-      end
-    end
-
     def filter_data(incidents)
       p "#{incidents.count} before uniq"
       p "uniqifying"
@@ -167,7 +158,6 @@ module PrintingPress
     end
   end
 end
-
 
 # ===========
 # = routine =
@@ -180,16 +170,12 @@ if ARGV[0] == "cache"
     p "looks like your cache has data -- try deleting it first."
   else
     worker.fill_cache
-  end
-  
-elsif ARGV[0] == "filter"
-  cache= PrintingPress::Cache.new
-  incidents = cache.read
-  filter_data(incidents)
+  end  
 elsif ARGV[0] == "print"
   book= PrintingPress::Book.new
   cache= PrintingPress::Cache.new
-  book.print(cache.read)
+  incidents= cache.read
+  book.print(incidents)
 else
-  p "usage: ruby ushahidi2pdf.rb [cache|filter|print]"
+  p "usage: ruby ushahidi2pdf.rb [cache|print]"
 end

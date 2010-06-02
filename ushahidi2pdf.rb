@@ -8,9 +8,20 @@ require 'crack'
 require 'ostruct'
 require 'ap'
 
+#1. call "scriptname cache" => cache.json is filled with instance data.
+#2. call "scriptname print" => pdf is typeset and output
+
 INSTANCE_URL= "http://haiti.ushahidi.com/api?task=incidents&by=sinceid&resp=json&id="
 # INSTANCE_URL= "http://roguegenius.com/africa/api?task=incidents&by=sinceid&resp=json&id="
-LIMIT=100
+
+# You must adjust the limit to reflect the total number of instances.
+READ_LIMIT=4040
+
+#lower it for test printing
+PRINT_LIMIT=100
+
+#anything larger than this will be trimmed
+MAX_INCIDENT_SIZE= 1500
 
 module PrintingPress
 
@@ -45,24 +56,29 @@ module PrintingPress
       incidents.each do |i|
         if i.empty? 
           p "empty incident, skipping ..."
-        elsif i['incident']['incidentdescription'].length > 2000
+        elsif i['incident']['incidentdescription'].length > MAX_INCIDENT_SIZE
           p "incident too big: #{i['incident']['incidentdescription']}"
         elsif i['incident']['incidentid'] == @previous_id
           p "duplicate incident, skipping ..."
         else
           @current_id= i['incident']['incidentid']
-          p "printing! This incident: #{@current_id}"
+          if @current_id.to_i > PRINT_LIMIT
+            @book.render_file("book.pdf")
+            `open book.pdf`
+            return true
+          end
+          p "printing! This incident: #{@current_id}"          
           @previous_id ||= "unset"
           p "previous incident: #{@previous_id}"
           @book.bounding_box([@x_pos, @y_pos], :width => 300, :height => 500) do  
             typeset_header
             @book.text((i['incident']['incidenttitle']))
+
             @book.text("\n")
             typeset_body
-            @book.text((i['incident']['incidentdescription']).gsub(/IDUshahidi:\W+\d+/, ''))
+            @book.text((i['incident']['incidentdescription']).gsub(/IDUshahidi:\W+\d+/, '').gsub(/[\n]+/, "\n"))
             typeset_timestamp
             @book.text("\n")
-            @book.text(i['incident']['incidentmedia']) unless i['incident']['incidentmedia'] == nil
             @book.text(i['incident']['incidentdate']) unless i['incident']['incidentdate'] == nil
             @book.text(i['incident']['locationlatitude']) unless i['incident']['incidentlatitude'] == nil
             @book.text(i['incident']['locationlongitude']) unless i['incident']['incidentlongitude'] == nil
@@ -149,7 +165,7 @@ module PrintingPress
       cache= PrintingPress::Cache.new
       sinceid=0
       cache.write_text('{"incidents":[')
-      until sinceid > LIMIT do
+      until sinceid > READ_LIMIT do
         # incrementing sinceid to work around API limits
         theurl= "#{INSTANCE_URL}#{sinceid}"
         incidents= crawler.crawl(theurl)
